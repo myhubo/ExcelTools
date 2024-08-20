@@ -13,7 +13,6 @@ namespace ExcelToolkit.Model
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public abstract class DataConvertAttribute : Attribute
     {
-
         public abstract object ConvertValue(object value);
     }
 }

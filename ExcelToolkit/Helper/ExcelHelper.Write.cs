@@ -1,6 +1,8 @@
 ﻿using ExcelToolkit.Model;
 using ICSharpCode.SharpZipLib.Zip;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Functions;
+using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,13 @@ namespace ExcelToolkit.Helper
         /// <summary>
         /// 导出数据
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <param name="sheetName"></param>
+        /// <typeparam name="T">输出的数据类型</typeparam>
+        /// <param name="data">数据集合</param>
+        /// <param name="isXlsx">是否为2007格式，否则为2003格式.xls</param>
+        /// <param name="sheetName">输出的sheet名称</param>
         /// <returns></returns>
         /// <exception cref="ExcelException"></exception>
-        public static byte[] Export<T>(this IEnumerable<T> data, string sheetName = "Sheet1") where T : class
+        public static byte[] Export<T>(this IEnumerable<T> data, bool isXlsx = true, string sheetName = "Sheet1") where T : class
         {
             var properties = typeof(T).GetProperties().Where(t => t.CustomAttributes.Any(a => a.AttributeType == typeof(ExcelColumnAttribute)));
             var propertyDict = new Dictionary<int, PropertyInfo>();
@@ -42,7 +45,7 @@ namespace ExcelToolkit.Helper
                 titleDict.Add(index, attribute.Name ?? property.Name);
             }
 
-            var book = new XSSFWorkbook(); // XSSFWorkbook 2007格式 HSSFWorkbook 2003格式
+            IWorkbook book = isXlsx ? new XSSFWorkbook() : new HSSFWorkbook(); // XSSFWorkbook 2007格式 HSSFWorkbook 2003格式
             var sheet = book.CreateSheet(sheetName);
             properties = propertyDict.OrderBy(t => t.Key).Select(t => t.Value).ToList();
 

@@ -19,6 +19,13 @@ namespace ExcelToolkit.Helper
 {
     public static partial class ExcelHelper
     {
+        /// <summary>
+        /// 从本地读取excel
+        /// </summary>
+        /// <typeparam name="T">数据对象类型</typeparam>
+        /// <param name="filepath">本地文件路径</param>
+        /// <param name="validateRowFunc">自定义数据校验</param>
+        /// <returns></returns>
         public static ExcelData<T> ReadData<T>(string filepath, Func<T, string> validateRowFunc = null) where T : class
         {
             var isXlsx = filepath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
@@ -26,6 +33,13 @@ namespace ExcelToolkit.Helper
                 return ReadData(stream, isXlsx, validateRowFunc).data;
         }
 
+        /// <summary>
+        /// 从web上传文件读取excel
+        /// </summary>
+        /// <typeparam name="T">数据对象类型</typeparam>
+        /// <param name="file">上传的文件</param>
+        /// <param name="validateRowFunc">自定义数据校验</param>
+        /// <returns></returns>
         public static ExcelData<T> ReadData<T>(IFormFile file, Func<T, string> validateRowFunc = null) where T : class
         {
             var isXlsx = file.FileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
@@ -33,6 +47,13 @@ namespace ExcelToolkit.Helper
                 return ReadData(stream, isXlsx, validateRowFunc).data;
         }
 
+        /// <summary>
+        /// 从本地读取excel，如有错误在原文件最后一列输出错误信息
+        /// </summary>
+        /// <typeparam name="T">数据对象类型</typeparam>
+        /// <param name="filepath">本地文件路径</param>
+        /// <param name="validateRowFunc">自定义数据校验</param>
+        /// <returns></returns>
         public static (ExcelData<T>, ExcelMemoryStream?) ReadDataAndExport<T>(string filepath, Func<T, string> validateRowFunc = null) where T : class
         {
             var isXlsx = filepath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
@@ -40,6 +61,13 @@ namespace ExcelToolkit.Helper
                 return ReadData(stream, isXlsx, validateRowFunc, true);
         }
 
+        /// <summary>
+        /// 从web上传文件读取excel，如有错误在原文件最后一列输出错误信息
+        /// </summary>
+        /// <typeparam name="T">数据对象类型</typeparam>
+        /// <param name="file">上传的文件</param>
+        /// <param name="validateRowFunc">自定义数据校验</param>
+        /// <returns></returns>
         public static (ExcelData<T>, ExcelMemoryStream?) ReadDataAndExport<T>(IFormFile file, Func<T, string> validateRowFunc = null) where T : class
         {
             var isXlsx = file.FileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
@@ -47,6 +75,16 @@ namespace ExcelToolkit.Helper
                 return ReadData(stream, isXlsx, validateRowFunc, true);
         }
 
+        /// <summary>
+        /// 从stream中读取excel
+        /// </summary>
+        /// <typeparam name="T">数据对象类型</typeparam>
+        /// <param name="stream">excel数据流</param>
+        /// <param name="isXlsx">是否为2007格式，否则为2003格式.xls</param>
+        /// <param name="validateRowFunc">自定义数据校验</param>
+        /// <param name="exportIfHasError">是否输出错误信息</param>
+        /// <returns></returns>
+        /// <exception cref="ExcelException"></exception>
         public static (ExcelData<T> data, ExcelMemoryStream? stream) ReadData<T>(Stream stream, bool isXlsx = true, Func<T, string> validateRowFunc = null, bool exportIfHasError = false) where T : class
         {
             try
