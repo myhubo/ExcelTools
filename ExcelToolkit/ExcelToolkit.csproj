@@ -10,6 +10,22 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="NPOI" Version="2.7.1" />
+      <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
  
+ <PropertyGroup>
+  
+  <PackageId>ExcelToolKit</PackageId>
+  <Version>1.0.0</Version>
+  <Authors>bo hu</Authors>
+  <Company>N/A</Company>
+  <Description>基于NPOI快速读写excel工具</Description>
+  <PackageTags>excel;NPOI;</PackageTags>
+  <RepositoryUrl>https://github.com/myhubo/ExcelTools</RepositoryUrl>
+  <ProjectUrl>https://github.com/myhubo/ExcelTools</ProjectUrl>
+    <LicenseUrl>https://github.com/myhubo/ExcelTools/blob/main/LICENSE</LicenseUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+      <PackageLicenseExpression>MIT</PackageLicenseExpression>
+</PropertyGroup>
+
 </Project>

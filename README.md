@@ -1,13 +1,21 @@
 # ExcelTools
 基于NPOI快捷读取和输出excel的小工具
+- nuget地址 https://www.nuget.org/packages/ExcelToolKit/
+    - 安装命令
+    ` dotnet add package ExcelToolKit --version 1.0.3`
+- github地址 https://github.com/myhubo/ExcelTools/tree/main
+
+
+# 实现功能
 
 1. 支持读取.xlsx和.xls格式的excel文件为对象列表
 2. 支持将对象列表输出为.xlsx和.xls格式的excel文件
 3. 如果读取的excel有错误，可在原文件最后增加具体错误信息
 
-# 定义实体类
+# 快速开始
+## 1.定义实体类
 - 定义实体对象，通过 `ExcelTemplateAttribute` 指定读取方式，按标题读取或按位置读取；
-- 通过 `ExcelRowMessageAttribute` 自定义错误提示格式
+- 通过 `ExcelColumnAttribute` 自定义列信息
 
 ```csharp
     /// <summary>
@@ -35,7 +43,7 @@
     }
 ```
 
-# 读取Excel
+## 2.读取Excel
 - 读取Excel文件，并返回对象列表
 ```csharp 
    var data = ExcelHelper.ReadData<TestData1>(path);
@@ -44,7 +52,7 @@
 ```csharp 
    (_,var stream) = ExcelHelper.ReadDataAndExport<TestData1>(path);
 ```
-# 生成excel
+## 3.生成excel
 ```csharp 
     var data = new List<TestData1>();
     data.Add(new TestData1() { Code = "123", Name = "测试" });
@@ -69,6 +77,21 @@
      }
  }
 
+
+```
+- 自定义错误提示格式`ExcelRowMessageAttribute`
+```csharp
+  public class MyExcelRowMessageAttribute : ExcelRowMessageAttribute
+  {
+      public override string GetMessage(ExcelRowInfo excelRowInfo)
+      {
+          return $"读取错误:{JsonConvert.SerializeObject(excelRowInfo)}";
+      }
+  }
+```
+
+- 使用示例
+```csharp
 [ExcelTemplate]
 [MyExcelRowMessage]
 public class TestData1
@@ -81,5 +104,4 @@ public class TestData1
     public decimal Price { get; set; }
 }
 ```
-
-# 具体用法参照TestProject
+# 具体用法可参照TestProject
